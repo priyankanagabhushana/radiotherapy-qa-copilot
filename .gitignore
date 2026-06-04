@@ -1,0 +1,43 @@
+# ── Python ───────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# ── Virtual Environments ─────────────────────────────────────────────
+.venv/
+venv/
+env/
+.env
+
+# ── IDE / Editor ─────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ── Large MRI Data (BraTS NIfTI files — multi-GB) ───────────────────
+brats_real/
+brats_data/
+*.nii
+*.nii.gz
+*.nii.zip
+
+# ── Generated Reports (regenerate with: python generate_report.py) ──
+neuroqa_report.html
+/tmp/
+
+# ── Jupyter ──────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ── OS ───────────────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride

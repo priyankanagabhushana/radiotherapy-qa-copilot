@@ -1,0 +1,51 @@
+Patient_ID,Structure_Name,Tumor_Volume_cc,Distance_to_OAR_mm,AI_Uncertainty_Score
+PT-0001,Left Retina,8.67,15.1,0.332
+PT-0002,Cochlea (Left),58.06,12.3,0.403
+PT-0003,Optic Chiasm,23.77,0.1,1.0
+PT-0004,Spinal Cord,10.82,7.6,0.204
+PT-0005,Cochlea (Right),37.8,0.9,0.854
+PT-0006,Pituitary Gland,3.23,1.9,0.624
+PT-0007,Right Optic Nerve,55.98,1.9,0.569
+PT-0008,Cochlea (Right),2.73,0.3,0.925
+PT-0009,Right Optic Nerve,3.9,2.2,0.66
+PT-0010,Optic Chiasm,23.79,9.0,0.382
+PT-0011,Right Retina,15.42,32.5,0.528
+PT-0012,Right Retina,10.62,7.8,0.21
+PT-0013,Spinal Cord,4.94,11.8,0.211
+PT-0014,Brainstem,23.53,8.4,0.6
+PT-0015,Pituitary Gland,11.62,0.7,0.783
+PT-0016,Right Retina,3.03,4.8,0.54
+PT-0017,Left Optic Nerve,16.23,5.9,0.191
+PT-0018,Hippocampus,9.03,22.6,0.353
+PT-0019,Spinal Cord,23.15,2.3,0.725
+PT-0020,Left Retina,1.23,26.5,0.532
+PT-0021,Pituitary Gland,2.55,2.5,0.749
+PT-0022,Left Retina,42.49,1.2,0.729
+PT-0023,Chiasm,2.09,1.5,0.6
+PT-0024,Brainstem,2.02,22.9,0.375
+PT-0025,Right Retina,12.27,35.7,0.578
+PT-0026,Brainstem,4.99,2.5,0.907
+PT-0027,Cochlea (Right),1.75,23.9,0.18
+PT-0028,Right Lens,3.52,14.3,0.122
+PT-0029,Right Lens,17.65,10.0,0.295
+PT-0030,Spinal Cord,42.93,2.0,0.856
+PT-0031,Left Optic Nerve,0.93,11.3,0.331
+PT-0032,Cochlea (Left),1.01,25.9,0.536
+PT-0033,Left Optic Nerve,1.29,16.1,0.337
+PT-0034,Cochlea (Left),1.75,12.1,0.541
+PT-0035,Right Optic Nerve,67.89,4.1,0.453
+PT-0036,Spinal Cord,1.87,5.3,0.261
+PT-0037,Spinal Cord,3.7,2.2,0.769
+PT-0038,Left Retina,11.16,7.8,0.393
+PT-0039,Right Lens,1.6,36.1,0.28
+PT-0040,Optic Chiasm,17.9,4.4,0.567
+PT-0041,Cochlea (Right),10.62,0.2,0.852
+PT-0042,Left Lens,24.61,0.8,0.759
+PT-0043,Left Retina,2.68,4.7,0.21
+PT-0044,Cochlea (Left),1.95,18.9,0.195
+PT-0045,Right Lens,10.87,16.6,0.521
+PT-0046,Spinal Cord,0.82,4.0,0.271
+PT-0047,Left Optic Nerve,2.19,0.4,0.829
+PT-0048,Chiasm,3.16,0.1,0.588
+PT-0049,Right Lens,2.92,4.0,0.566
+PT-0050,Right Optic Nerve,18.99,0.6,0.646

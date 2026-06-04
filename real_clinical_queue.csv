@@ -1,0 +1,51 @@
+Patient_ID,Structure_Name,Tumor_Volume_cc,Distance_to_OAR_mm,AI_Uncertainty_Score,Irregularity_Score,Max_Diameter_mm,Data_Source
+BraTS20_Training_001,Chiasm,211.98,0.1,0.848,0.296,113.3,BraTS2020
+BraTS20_Training_002,Pituitary Gland,67.01,0.1,0.843,0.393,77.3,BraTS2020
+BraTS20_Training_003,Left Retina,29.81,3.6,0.761,0.585,64.1,BraTS2020
+BraTS20_Training_004,Right Optic Nerve,103.5,0.1,0.843,0.292,74.7,BraTS2020
+BraTS20_Training_005,Pituitary Gland,21.96,5.4,0.617,0.495,62.3,BraTS2020
+BraTS20_Training_006,Brainstem,139.23,0.1,0.858,0.322,95.0,BraTS2020
+BraTS20_Training_007,Right Optic Nerve,39.77,1.6,0.834,0.444,65.3,BraTS2020
+BraTS20_Training_008,Hippocampus,33.45,2.8,0.659,0.683,69.1,BraTS2020
+BraTS20_Training_009,Left Optic Nerve,183.09,0.1,0.854,0.361,116.4,BraTS2020
+BraTS20_Training_010,Cochlea (Right),44.58,0.8,0.762,0.628,81.8,BraTS2020
+BraTS20_Training_011,Pituitary Gland,55.13,0.1,0.748,0.358,79.4,BraTS2020
+BraTS20_Training_012,Pituitary Gland,32.05,3.1,0.736,0.54,71.7,BraTS2020
+BraTS20_Training_013,Hippocampus,46.34,0.5,0.749,0.482,70.3,BraTS2020
+BraTS20_Training_014,Right Retina,80.4,0.1,0.886,0.413,90.6,BraTS2020
+BraTS20_Training_015,Chiasm,125.29,0.1,0.858,0.308,86.0,BraTS2020
+BraTS20_Training_016,Right Optic Nerve,127.19,0.1,0.796,0.387,88.5,BraTS2020
+BraTS20_Training_017,Hippocampus,100.76,0.1,0.827,0.378,85.8,BraTS2020
+BraTS20_Training_018,Right Lens,45.12,0.7,0.808,0.646,84.4,BraTS2020
+BraTS20_Training_019,Right Lens,43.8,0.9,0.859,0.416,57.3,BraTS2020
+BraTS20_Training_020,Left Optic Nerve,175.68,0.1,0.833,0.289,127.9,BraTS2020
+BraTS20_Training_021,Chiasm,36.86,2.1,0.815,0.721,76.5,BraTS2020
+BraTS20_Training_022,Pituitary Gland,68.12,0.1,0.871,0.293,77.6,BraTS2020
+BraTS20_Training_023,Right Optic Nerve,41.12,1.4,0.799,0.464,71.8,BraTS2020
+BraTS20_Training_024,Brainstem,95.63,0.1,0.861,0.426,104.6,BraTS2020
+BraTS20_Training_025,Right Optic Nerve,73.44,0.1,0.766,0.331,89.3,BraTS2020
+BraTS20_Training_026,Left Optic Nerve,180.62,0.1,0.755,0.336,108.9,BraTS2020
+BraTS20_Training_027,Right Retina,66.65,0.1,0.811,0.463,79.9,BraTS2020
+BraTS20_Training_028,Left Retina,20.94,5.7,0.6,0.462,55.7,BraTS2020
+BraTS20_Training_029,Hippocampus,62.35,0.1,0.827,0.414,84.0,BraTS2020
+BraTS20_Training_030,Right Retina,99.91,0.1,0.864,0.592,90.3,BraTS2020
+BraTS20_Training_031,Cochlea (Right),87.61,0.1,0.88,0.438,101.3,BraTS2020
+BraTS20_Training_032,Right Lens,26.5,4.3,0.639,0.466,55.2,BraTS2020
+BraTS20_Training_033,Right Optic Nerve,122.66,0.1,0.71,0.328,83.2,BraTS2020
+BraTS20_Training_034,Brainstem,91.57,0.1,0.828,0.298,87.3,BraTS2020
+BraTS20_Training_035,Right Optic Nerve,78.82,0.1,0.851,0.438,94.2,BraTS2020
+BraTS20_Training_036,Brainstem,14.83,7.5,0.578,0.524,48.3,BraTS2020
+BraTS20_Training_037,Right Retina,189.01,0.1,0.781,0.279,104.2,BraTS2020
+BraTS20_Training_038,Right Optic Nerve,100.88,0.1,0.82,0.396,97.1,BraTS2020
+BraTS20_Training_039,Chiasm,51.85,0.1,0.785,0.323,59.4,BraTS2020
+BraTS20_Training_040,Cochlea (Left),171.45,0.1,0.829,0.322,93.0,BraTS2020
+BraTS20_Training_041,Pituitary Gland,101.42,0.1,0.856,0.358,82.3,BraTS2020
+BraTS20_Training_042,Left Retina,75.95,0.1,0.722,0.344,69.9,BraTS2020
+BraTS20_Training_043,Optic Chiasm,37.43,2.0,0.829,0.659,69.6,BraTS2020
+BraTS20_Training_044,Right Retina,19.15,6.2,0.668,0.845,68.0,BraTS2020
+BraTS20_Training_045,Left Optic Nerve,97.2,0.1,0.767,0.33,91.5,BraTS2020
+BraTS20_Training_046,Hippocampus,36.34,2.2,0.876,0.745,73.9,BraTS2020
+BraTS20_Training_047,Chiasm,132.68,0.1,0.892,0.349,86.5,BraTS2020
+BraTS20_Training_048,Left Optic Nerve,29.24,3.7,0.804,0.776,67.1,BraTS2020
+BraTS20_Training_049,Left Retina,83.42,0.1,0.715,0.382,73.4,BraTS2020
+BraTS20_Training_050,Pituitary Gland,82.78,0.1,0.771,0.311,79.4,BraTS2020
