@@ -638,7 +638,7 @@ if active == 0:
                 return generate_group_pdf(df)
 
         st.download_button(
-            label="Download Group Report (PDF)",
+            label="\U0001f4c4 Download Group Report (PDF)",
             data=_get_group_report_bytes(),
             file_name="NeuroQA_Group_Report.pdf",
             mime="application/pdf", use_container_width=True,
@@ -1093,7 +1093,7 @@ elif active == 2:
     with pc4:
         patient_pdf = generate_patient_pdf(selected_row, df)
         st.download_button(
-            label="Download Report (PDF)",
+            label="\U0001f4c4 Download Report (PDF)",
             data=patient_pdf,
             file_name=f"NeuroQA_{selected_row['Patient_ID']}.pdf",
             mime="application/pdf", use_container_width=True,
