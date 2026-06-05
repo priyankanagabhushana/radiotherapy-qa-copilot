@@ -6,7 +6,9 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import os
 import io
+from PIL import Image
 from scipy.ndimage import binary_erosion
+import plotly.graph_objects as go
 
 
 SEG_COLORS = {
@@ -15,6 +17,7 @@ SEG_COLORS = {
     4: (1.0, 1.0, 0.2),
 }
 SEG_LABELS = {1: "Tumor Core (Necrosis)", 2: "Edema (Swelling)", 4: "Enhancing Tumor (Active)"}
+PREVIEW_DIR = os.path.join(os.path.dirname(__file__), "mri_previews")
 
 
 def _find_nifti_files(patient_id, base_dirs=None):
@@ -253,3 +256,73 @@ def render_combined_view(patient_id, overlay_opacity=0.55):
 def has_nifti_data(patient_id):
     mri_path, seg_path = _find_nifti_files(patient_id)
     return mri_path is not None and seg_path is not None
+
+
+# ═══════════════════════════════════════════════════════════════
+# PNG + Mask-based MRI rendering (lightweight, no NIfTI needed)
+# ═══════════════════════════════════════════════════════════════
+
+def has_plane_data(patient_id, plane):
+    """Check if PNG + mask PNG exists for a specific plane."""
+    d = os.path.join(PREVIEW_DIR, patient_id)
+    return (os.path.exists(os.path.join(d, f"{plane}.png")) and
+            os.path.exists(os.path.join(d, f"{plane}_mask.png")))
+
+
+def load_plane_image(patient_id, plane):
+    """Load grayscale PNG as float32 array [0, 1]. Returns (H, W) or None."""
+    path = os.path.join(PREVIEW_DIR, patient_id, f"{plane}.png")
+    if not os.path.exists(path):
+        return None
+    return np.array(Image.open(path)).astype(np.float32) / 255.0
+
+
+def load_plane_mask(patient_id, plane):
+    """Load mask PNG. Returns (H, W) uint8 with BraTS labels 0/1/2/4."""
+    path = os.path.join(PREVIEW_DIR, patient_id, f"{plane}_mask.png")
+    if not os.path.exists(path):
+        return None
+    return np.array(Image.open(path))
+
+
+def render_plane_composite(patient_id, plane, opacity=0.55):
+    """Create RGB composite: grayscale MRI + mask overlay at given opacity.
+    Returns (H, W, 3) uint8 array or None."""
+    base = load_plane_image(patient_id, plane)
+    if base is None:
+        return None
+    h, w = base.shape
+
+    # Start with grayscale RGB
+    rgb = np.stack([base, base, base], axis=-1)
+
+    # Apply mask overlay with opacity
+    mask = load_plane_mask(patient_id, plane)
+    if mask is not None and opacity > 0:
+        for brats_label, color in SEG_COLORS.items():
+            m = mask == brats_label
+            if m.any():
+                rgb[m, 0] = rgb[m, 0] * (1 - opacity) + color[0] * opacity
+                rgb[m, 1] = rgb[m, 1] * (1 - opacity) + color[1] * opacity
+                rgb[m, 2] = rgb[m, 2] * (1 - opacity) + color[2] * opacity
+
+    return (rgb * 255).clip(0, 255).astype(np.uint8)
+
+
+def create_mri_plotly(composite_rgb, title="", height=450):
+    """Create Plotly figure with scroll-to-zoom for MRI display.
+    composite_rgb: (H, W, 3) uint8 array."""
+    fig = go.Figure()
+    fig.add_trace(go.Image(z=composite_rgb, name=title))
+    fig.update_layout(
+        title=dict(text=title, font=dict(color="#f1f5f9", size=13)),
+        template="plotly_dark",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="#0f172a",
+        height=height,
+        margin=dict(l=0, r=0, t=35, b=0),
+        xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False,
+                   scaleanchor="x", autorange="reversed"),
+    )
+    return fig

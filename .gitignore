@@ -41,3 +41,6 @@ brats_data/
 .DS_Store
 .AppleDouble
 .LSOverride
+neuroqa_report.html
+pre_render_mri.py
+stats_analysis copy.py

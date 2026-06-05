@@ -11,7 +11,11 @@ import plotly.graph_objects as go
 from scipy.stats import probplot
 
 from knowledge_base import KNOWLEDGE_BASE, retrieve_guidelines, map_triggers
-from mri_viewer import render_combined_view, has_nifti_data
+from mri_viewer import (
+    render_combined_view, has_nifti_data, has_plane_data,
+    render_plane_composite, create_mri_plotly,
+)
+from pdf_report import generate_patient_pdf, generate_group_pdf
 import stats_analysis as sa
 
 # ═══════════════════════════════════════════════════════════════
@@ -476,7 +480,7 @@ def generate_patient_comparison(row: pd.Series, df: pd.DataFrame) -> str:
 if "review_patient_id" not in st.session_state:
     st.session_state["review_patient_id"] = None
 if "active_tab" not in st.session_state:
-    st.session_state["active_tab"] = 0
+    st.session_state["active_tab"] = 1  # Default to Patient Queue
 if "chart_key" not in st.session_state:
     st.session_state["chart_key"] = 0
 
@@ -629,20 +633,16 @@ if active == 0:
         @st.cache_data
         def _get_group_report_bytes():
             try:
-                from generate_report import generate_html_report
-                rp = generate_html_report(include_mri=True, max_mri_patients=10)
-                with open(rp, "rb") as f:
-                    return f.read()
-            except Exception:
-                return b"<html><body>Report generation error.</body></html>"
+                return generate_group_pdf(df)
+            except Exception as e:
+                return generate_group_pdf(df)
 
         st.download_button(
-            label="Download Group Report",
+            label="Download Group Report (PDF)",
             data=_get_group_report_bytes(),
-            file_name="NeuroQA_Group_Report.html",
-            mime="text/html", use_container_width=True,
+            file_name="NeuroQA_Group_Report.pdf",
+            mime="application/pdf", use_container_width=True,
             key="dl_group_top",
-            help="Self-contained HTML — open and Ctrl+P to save as PDF",
         )
 
     st.markdown("---")
@@ -967,13 +967,34 @@ if active == 0:
 # ═══════════════════════════════════════════════════════════════
 
 elif active == 1:
-    st.markdown(
-        '<p style="font-size:1.4rem; font-weight:700; color:#f1f5f9;">Patient Triage Queue</p>'
-        '<p style="color:#94a3b8; font-size:0.85rem; margin-bottom:8px;">'
-        'Patients are sorted by risk level (HIGH first). '
-        'Select a patient below to open their full review.</p>',
-        unsafe_allow_html=True,
-    )
+    # Pie chart + queue header
+    pq1, pq2 = st.columns([1, 2.5])
+    with pq1:
+        fig, ax = plt.subplots(figsize=(3, 2.5), facecolor="#0f172a")
+        ax.set_facecolor("#0f172a")
+        sizes = [high_count, mod_count, low_count]
+        wedges, _ = ax.pie(
+            sizes, labels=None, colors=["#ef4444", "#f59e0b", "#22c55e"],
+            startangle=90, wedgeprops=dict(width=0.4, edgecolor="#0f172a"),
+        )
+        ax.text(0, 0, f"{len(df)}", ha="center", va="center",
+                fontsize=18, fontweight="bold", color="white")
+        ax.text(0, -0.17, "patients", ha="center", va="center",
+                fontsize=7, color="#94a3b8")
+        ax.legend(wedges, [f"HIGH ({high_count})", f"MOD ({mod_count})", f"LOW ({low_count})"],
+                  loc="lower center", fontsize=6, facecolor="#1e293b",
+                  edgecolor="#334155", labelcolor="white", ncol=3)
+        st.pyplot(fig)
+        plt.close(fig)
+
+    with pq2:
+        st.markdown(
+            '<p style="font-size:1.4rem; font-weight:700; color:#f1f5f9;">Patient Triage Queue</p>'
+            '<p style="color:#94a3b8; font-size:0.85rem; margin-bottom:8px;">'
+            'Patients are sorted by risk level (HIGH first). '
+            'Select a patient below to open their full review.</p>',
+            unsafe_allow_html=True,
+        )
 
     sorted_df = df.sort_values(
         by="Risk_Level",
@@ -1070,31 +1091,58 @@ elif active == 2:
         )
 
     with pc4:
-        patient_html = generate_patient_pdf_html(selected_row, df)
+        patient_pdf = generate_patient_pdf(selected_row, df)
         st.download_button(
-            label="Download Report",
-            data=patient_html,
-            file_name=f"NeuroQA_{selected_row['Patient_ID']}.html",
-            mime="text/html", use_container_width=True,
+            label="Download Report (PDF)",
+            data=patient_pdf,
+            file_name=f"NeuroQA_{selected_row['Patient_ID']}.pdf",
+            mime="application/pdf", use_container_width=True,
             key="dl_patient_top",
-            help="Open HTML, then Ctrl+P to save as PDF",
         )
 
     st.markdown("")
 
-    opacity = st.slider(
-        "Segmentation Overlay  (0 = outlines only, 1 = full color overlay)",
-        min_value=0.0, max_value=1.0, value=0.55, step=0.05, key="opacity",
-    )
+    # MRI Viewer — PNG-based with opacity slider + Plotly zoom
+    any_plane = any(has_plane_data(selected_id, p) for p in ["axial", "coronal", "sagittal"])
 
-    if has_nifti_data(selected_id):
+    if any_plane:
+        opacity = st.slider(
+            "Segmentation Overlay  (0 = MRI only, 1 = full color fill)",
+            min_value=0.0, max_value=1.0, value=0.55, step=0.05, key="opacity",
+        )
+        st.markdown(
+            '<p style="color:#94a3b8; font-size:0.8rem;">'
+            'Scroll to zoom into each image. Drag to pan.</p>',
+            unsafe_allow_html=True,
+        )
+
+        plane_cols = st.columns(3)
+        for col, plane in zip(plane_cols, ["axial", "coronal", "sagittal"]):
+            with col:
+                if has_plane_data(selected_id, plane):
+                    composite = render_plane_composite(selected_id, plane, opacity)
+                    if composite is not None:
+                        fig = create_mri_plotly(composite, title=plane.title(), height=380)
+                        st.plotly_chart(
+                            fig, use_container_width=True,
+                            config={"scrollZoom": True, "displayModeBar": False},
+                            key=f"mri_{plane}_{selected_id}",
+                        )
+                else:
+                    st.info(f"No {plane} data")
+
+    elif has_nifti_data(selected_id):
+        opacity = st.slider(
+            "Segmentation Overlay  (0 = MRI only, 1 = full color fill)",
+            min_value=0.0, max_value=1.0, value=0.55, step=0.05, key="opacity",
+        )
         combined_buf = render_combined_view(selected_id, overlay_opacity=opacity)
         if combined_buf:
             st.image(combined_buf, use_container_width=True)
-            st.caption("Tip: Use browser zoom (Ctrl + mouse wheel) to zoom in/out.")
+
     else:
         st.info(
-            "**MRI scans appear here** when BraTS 2020 NIfTI files "
+            "**MRI scans appear here** when NIfTI files "
             "are in `data/` or `brats_real/`. "
             "[Download from Kaggle](https://www.kaggle.com/datasets/awsaf49/brats2020-training-data)"
         )
