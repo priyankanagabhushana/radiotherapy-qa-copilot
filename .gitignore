@@ -24,6 +24,7 @@ env/
 Thumbs.db
 
 # ── Large MRI Data (BraTS NIfTI files — multi-GB) ───────────────────
+data/
 brats_real/
 brats_data/
 *.nii
